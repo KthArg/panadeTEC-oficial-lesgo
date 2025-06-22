@@ -10,7 +10,7 @@ export default function EmpleadosPage() {
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<Empleado | null>(null);
-  const [userAuth, setUserAuth] = useState<string>('12345'); // Demo auth
+  const [userAuth, setUserAuth] = useState<string>('208340123'); // Demo auth
 
   // Form state
   const [formData, setFormData] = useState({
@@ -112,7 +112,7 @@ export default function EmpleadosPage() {
       apellido1: item.apellido1,
       apellido2: item.apellido2,
       ciudad: item.ciudad.toString(),
-      indicacion: item.indicacion,
+      indicacion: item.indicaciones,
       FechaNacimiento: new Date(item.FechaNacimiento).toISOString().split('T')[0],
       Especialidad: item.Especialidad,
       Grado_academico: item.Grado_academico,

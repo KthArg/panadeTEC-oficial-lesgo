@@ -105,7 +105,7 @@ export class FormValidator {
       apellido1: 'Primer apellido',
       apellido2: 'Segundo apellido',
       ciudad: 'Ciudad',
-      indicacion: 'Indicación',
+      indicaciones: 'Indicaciones', // Updated to plural
       FechaNacimiento: 'Fecha de nacimiento',
       Especialidad: 'Especialidad',
       Grado_academico: 'Grado académico',
@@ -114,11 +114,10 @@ export class FormValidator {
       IDMateriaPrima: 'ID Materia Prima',
       tipo: 'Tipo',
       marca: 'Marca',
-      Nombre: 'Nombre',
       FechaDeCompra: 'Fecha de compra',
       precio: 'Precio',
       cantidad: 'Cantidad',
-      IDProductos: 'ID Producto',
+      IDProducto: 'ID Producto', // Updated field name
       ClienteFrecuente: 'Cliente frecuente',
       NumPedido: 'Número de pedido',
       descripcion: 'Descripción',
@@ -210,7 +209,7 @@ export const validators = {
     apellido1: commonRules.apellido,
     apellido2: commonRules.apellido,
     ciudad: { required: true, min: 1 },
-    indicacion: { required: true, maxLength: 200 },
+    indicaciones: { required: true, maxLength: 200 }, // Updated to plural
     FechaNacimiento: commonRules.fecha,
     Especialidad: { required: true, maxLength: 50 },
     Grado_academico: { required: true, maxLength: 100 },
@@ -247,14 +246,14 @@ export const validators = {
     IDMateriaPrima: { required: true, min: 1 },
     tipo: { required: true, maxLength: 100 },
     marca: { required: true, maxLength: 20 },
-    Nombre: { required: true, maxLength: 30 },
+    nombre: { required: true, maxLength: 30 }, // Updated to lowercase
     FechaDeCompra: commonRules.fecha,
     precio: commonRules.precio,
     cantidad: commonRules.cantidad,
   }),
 
   producto: new FormValidator().setRules({
-    IDProductos: { required: true, min: 1 },
+    IDProducto: { required: true, min: 1 }, // Updated field name
     tipo: { required: true, maxLength: 100 },
   }),
 };

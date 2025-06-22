@@ -10,7 +10,7 @@ export default function PedidosPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<string>('todos');
   const [searchTerm, setSearchTerm] = useState('');
-  const [userAuth, setUserAuth] = useState<string>('12345'); // Demo auth
+  const [userAuth, setUserAuth] = useState<string>('208340123'); // Demo auth
 
   // Fetch orders data
   const fetchPedidos = async () => {

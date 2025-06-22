@@ -10,11 +10,11 @@ export default function ProductosPage() {
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<Producto | null>(null);
-  const [userAuth, setUserAuth] = useState<string>('12345'); // Demo auth
+  const [userAuth, setUserAuth] = useState<string>('208340123'); // Demo auth
 
   // Form state
   const [formData, setFormData] = useState({
-    IDProductos: '',
+    IDProducto: '', // Updated field name
     tipo: '',
   });
 
@@ -100,7 +100,7 @@ export default function ProductosPage() {
   const handleEdit = (item: Producto) => {
     setEditingItem(item);
     setFormData({
-      IDProductos: item.IDProductos.toString(),
+      IDProducto: item.IDProducto.toString(), // Updated field name
       tipo: item.tipo,
     });
     setShowForm(true);
@@ -109,7 +109,7 @@ export default function ProductosPage() {
   // Reset form
   const resetForm = () => {
     setFormData({
-      IDProductos: '',
+      IDProducto: '', // Updated field name
       tipo: '',
     });
   };
@@ -190,8 +190,8 @@ export default function ProductosPage() {
                 </label>
                 <input
                   type="number"
-                  value={formData.IDProductos}
-                  onChange={(e) => setFormData({ ...formData, IDProductos: e.target.value })}
+                  value={formData.IDProducto}
+                  onChange={(e) => setFormData({ ...formData, IDProducto: e.target.value })}
                   className="input"
                   required
                   disabled={!!editingItem}
@@ -235,7 +235,7 @@ export default function ProductosPage() {
       {/* Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {productos.map((producto) => (
-          <div key={producto.IDProductos} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 p-6">
+          <div key={producto.IDProducto} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 p-6">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <div className="bg-purple-100 p-2 rounded-lg">
@@ -243,7 +243,7 @@ export default function ProductosPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">
-                    Producto #{producto.IDProductos}
+                    Producto #{producto.IDProducto}
                   </h3>
                   <p className="text-sm text-gray-500">{producto.tipo}</p>
                 </div>
@@ -256,7 +256,7 @@ export default function ProductosPage() {
                   <Edit className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => handleDelete(producto.IDProductos)}
+                  onClick={() => handleDelete(producto.IDProducto)}
                   className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -316,8 +316,8 @@ export default function ProductosPage() {
               </thead>
               <tbody>
                 {productos.map((producto) => (
-                  <tr key={producto.IDProductos}>
-                    <td className="font-medium">{producto.IDProductos}</td>
+                  <tr key={producto.IDProducto}>
+                    <td className="font-medium">{producto.IDProducto}</td>
                     <td>
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
                         {producto.tipo}
@@ -332,7 +332,7 @@ export default function ProductosPage() {
                           <Edit className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(producto.IDProductos)}
+                          onClick={() => handleDelete(producto.IDProducto)}
                           className="p-1 text-red-600 hover:text-red-800"
                         >
                           <Trash2 className="h-4 w-4" />

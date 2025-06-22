@@ -10,7 +10,7 @@ export default function ClientesPage() {
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<Cliente | null>(null);
-  const [userAuth, setUserAuth] = useState<string>('12345'); // Demo auth
+  const [userAuth, setUserAuth] = useState<string>('208340123'); // Demo auth
 
   // Form state
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ export default function ClientesPage() {
     apellido1: '',
     apellido2: '',
     ciudad: '',
-    indicacion: '',
+    indicaciones: '', // plural as in DB
     FechaNacimiento: '',
     ClienteFrecuente: '0',
   });
@@ -111,7 +111,7 @@ export default function ClientesPage() {
       apellido1: item.apellido1,
       apellido2: item.apellido2,
       ciudad: item.ciudad.toString(),
-      indicacion: item.indicacion,
+      indicaciones: item.indicaciones,
       FechaNacimiento: new Date(item.FechaNacimiento).toISOString().split('T')[0],
       ClienteFrecuente: item.ClienteFrecuente.toString(),
     });
@@ -126,7 +126,7 @@ export default function ClientesPage() {
       apellido1: '',
       apellido2: '',
       ciudad: '',
-      indicacion: '',
+      indicaciones: '',
       FechaNacimiento: '',
       ClienteFrecuente: '0',
     });
@@ -305,8 +305,8 @@ export default function ClientesPage() {
                   Indicación/Dirección
                 </label>
                 <textarea
-                  value={formData.indicacion}
-                  onChange={(e) => setFormData({ ...formData, indicacion: e.target.value })}
+                  value={formData.indicaciones}
+                  onChange={(e) => setFormData({ ...formData, indicaciones: e.target.value })}
                   className="input"
                   required
                   maxLength={200}
@@ -396,7 +396,7 @@ export default function ClientesPage() {
               
               <div className="text-sm text-gray-600">
                 <strong>Dirección:</strong>
-                <p className="truncate">{cliente.indicacion}</p>
+                <p className="truncate">{cliente.indicaciones}</p>
               </div>
             </div>
           </div>

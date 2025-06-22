@@ -3,7 +3,7 @@ import sql from 'mssql';
 // Database configuration
 const dbConfig: sql.config = {
   server: process.env.DB_SERVER || 'localhost',
-  database: process.env.DB_DATABASE || 'OperationsManagement',
+  database: process.env.DB_DATABASE || 'BakeryDB', // Changed to match the actual DB name
   user: process.env.DB_USER || 'sa',
   password: process.env.DB_PASSWORD || '',
   options: {
@@ -16,6 +16,8 @@ const dbConfig: sql.config = {
     min: 0,
     idleTimeoutMillis: 30000,
   },
+  connectionTimeout: 15000,
+  requestTimeout: 15000,
 };
 
 // Database connection pool
@@ -71,7 +73,7 @@ export async function closeDbConnections(): Promise<void> {
   }
 }
 
-// Personas operations
+// Personas operations - Updated to match exact database structure
 export class PersonasService {
   static async insertPersona(data: {
     cedula: number;
@@ -79,7 +81,7 @@ export class PersonasService {
     apellido1: string;
     apellido2: string;
     ciudad: number;
-    indicacion: string;
+    indicaciones: string; // Updated to plural as in DB
     FechaNacimiento: Date;
   }) {
     return executeStoredProcedure('sp_insert_persona', {
@@ -88,7 +90,7 @@ export class PersonasService {
       apellido1: data.apellido1,
       apellido2: data.apellido2,
       ciudad: data.ciudad,
-      indicacion: data.indicacion,
+      indicaciones: data.indicaciones, // Updated to plural
       FechaNacimiento: data.FechaNacimiento,
     });
   }
@@ -104,7 +106,7 @@ export class PersonasService {
     apellido1: string;
     apellido2: string;
     ciudad: number;
-    indicacion: string;
+    indicaciones: string; // Updated to plural as in DB
     FechaNacimiento: Date;
   }) {
     return executeStoredProcedure('sp_update_persona', {
@@ -113,7 +115,7 @@ export class PersonasService {
       apellido1: data.apellido1,
       apellido2: data.apellido2,
       ciudad: data.ciudad,
-      indicacion: data.indicacion,
+      indicaciones: data.indicaciones, // Updated to plural
       FechaNacimiento: data.FechaNacimiento,
     });
   }
@@ -123,7 +125,7 @@ export class PersonasService {
   }
 }
 
-// Empleados operations
+// Empleados operations - Updated to match database
 export class EmpleadosService {
   static async insertEmpleado(data: {
     cedula: number;
@@ -131,7 +133,7 @@ export class EmpleadosService {
     apellido1: string;
     apellido2: string;
     ciudad: number;
-    indicacion: string;
+    indicaciones: string;
     FechaNacimiento: Date;
     Especialidad: string;
     Grado_academico: string;
@@ -144,7 +146,7 @@ export class EmpleadosService {
         apellido1: data.apellido1,
         apellido2: data.apellido2,
         ciudad: data.ciudad,
-        indicacion: data.indicacion,
+        indicaciones: data.indicaciones,
         FechaNacimiento: data.FechaNacimiento,
       });
       
@@ -170,7 +172,7 @@ export class EmpleadosService {
     apellido1: string;
     apellido2: string;
     ciudad: number;
-    indicacion: string;
+    indicaciones: string;
     FechaNacimiento: Date;
     Especialidad: string;
     Grado_academico: string;
@@ -182,7 +184,7 @@ export class EmpleadosService {
         apellido1: data.apellido1,
         apellido2: data.apellido2,
         ciudad: data.ciudad,
-        indicacion: data.indicacion,
+        indicaciones: data.indicaciones,
         FechaNacimiento: data.FechaNacimiento,
       });
       
@@ -209,15 +211,15 @@ export class EmpleadosService {
 
   static async checkEmployeeExists(cedula: number): Promise<boolean> {
     try {
-      const result = await this.selectEmpleados(cedula);
-      return result && result.length > 0;
+      const result = await executeStoredProcedure('sp_check_empleado_exists', { cedula });
+      return result && result[0] && result[0].existe > 0;
     } catch {
       return false;
     }
   }
 }
 
-// Clientes operations
+// Clientes operations - Updated to match database
 export class ClientesService {
   static async insertCliente(data: {
     cedula: number;
@@ -225,7 +227,7 @@ export class ClientesService {
     apellido1: string;
     apellido2: string;
     ciudad: number;
-    indicacion: string;
+    indicaciones: string;
     FechaNacimiento: Date;
     ClienteFrecuente: number;
   }) {
@@ -236,7 +238,7 @@ export class ClientesService {
         apellido1: data.apellido1,
         apellido2: data.apellido2,
         ciudad: data.ciudad,
-        indicacion: data.indicacion,
+        indicaciones: data.indicaciones,
         FechaNacimiento: data.FechaNacimiento,
       });
       
@@ -261,7 +263,7 @@ export class ClientesService {
     apellido1: string;
     apellido2: string;
     ciudad: number;
-    indicacion: string;
+    indicaciones: string;
     FechaNacimiento: Date;
     ClienteFrecuente: number;
   }) {
@@ -272,7 +274,7 @@ export class ClientesService {
         apellido1: data.apellido1,
         apellido2: data.apellido2,
         ciudad: data.ciudad,
-        indicacion: data.indicacion,
+        indicaciones: data.indicaciones,
         FechaNacimiento: data.FechaNacimiento,
       });
       
@@ -297,19 +299,19 @@ export class ClientesService {
   }
 }
 
-// Proveedores operations
+// Proveedores operations - Updated to match database
 export class ProveedoresService {
   static async insertProveedor(data: {
     IDProveedor: number;
     NombreProveedor: string;
     ciudad: number;
-    indicacion: string;
+    indicacion: string; // Singular as in DB
   }) {
     return executeStoredProcedure('sp_insert_proveedor', {
       IDProveedor: data.IDProveedor,
       NombreProveedor: data.NombreProveedor,
       ciudad: data.ciudad,
-      indicacion: data.indicacion,
+      indicacion: data.indicacion, // Singular
     });
   }
 
@@ -337,13 +339,13 @@ export class ProveedoresService {
   }
 }
 
-// MateriasPrimas operations
+// MateriasPrimas operations - Updated to match database with subclasses
 export class MateriasPrimasService {
   static async insertMateriaPrima(data: {
     IDMateriaPrima: number;
     tipo: string;
     marca: string;
-    Nombre: string;
+    nombre: string; // Updated to lowercase as in DB
     FechaDeCompra: Date;
     precio: number;
     cantidad: number;
@@ -352,7 +354,7 @@ export class MateriasPrimasService {
       IDMateriaPrima: data.IDMateriaPrima,
       tipo: data.tipo,
       marca: data.marca,
-      Nombre: data.Nombre,
+      nombre: data.nombre, // Updated to lowercase
       FechaDeCompra: data.FechaDeCompra,
       precio: data.precio,
       cantidad: data.cantidad,
@@ -368,7 +370,7 @@ export class MateriasPrimasService {
     IDMateriaPrima: number;
     tipo: string;
     marca: string;
-    Nombre: string;
+    nombre: string;
     FechaDeCompra: Date;
     precio: number;
     cantidad: number;
@@ -377,7 +379,7 @@ export class MateriasPrimasService {
       IDMateriaPrima: data.IDMateriaPrima,
       tipo: data.tipo,
       marca: data.marca,
-      Nombre: data.Nombre,
+      nombre: data.nombre,
       FechaDeCompra: data.FechaDeCompra,
       precio: data.precio,
       cantidad: data.cantidad,
@@ -389,39 +391,39 @@ export class MateriasPrimasService {
   }
 }
 
-// Productos operations
+// Productos operations - Updated to use correct field name
 export class ProductosService {
   static async insertProducto(data: {
-    IDProductos: number;
+    IDProducto: number; // Updated from IDProductos
     tipo: string;
   }) {
     return executeStoredProcedure('sp_insert_producto', {
-      IDProductos: data.IDProductos,
+      IDProducto: data.IDProducto, // Updated field name
       tipo: data.tipo,
     });
   }
 
-  static async selectProductos(IDProductos?: number) {
-    const params = IDProductos ? { IDProductos } : {};
+  static async selectProductos(IDProducto?: number) {
+    const params = IDProducto ? { IDProducto } : {}; // Updated field name
     return executeStoredProcedure('sp_select_productos', params);
   }
 
   static async updateProducto(data: {
-    IDProductos: number;
+    IDProducto: number; // Updated from IDProductos
     tipo: string;
   }) {
     return executeStoredProcedure('sp_update_producto', {
-      IDProductos: data.IDProductos,
+      IDProducto: data.IDProducto, // Updated field name
       tipo: data.tipo,
     });
   }
 
-  static async deleteProducto(IDProductos: number) {
-    return executeStoredProcedure('sp_delete_producto', { IDProductos });
+  static async deleteProducto(IDProducto: number) { // Updated parameter name
+    return executeStoredProcedure('sp_delete_producto', { IDProducto }); // Updated field name
   }
 }
 
-// Orders operations
+// Orders operations - Updated to match database structure
 export class PedidosService {
   static async createCustomerOrder(data: {
     cedula: number;
@@ -459,12 +461,24 @@ export class PedidosService {
     cantidad: number;
     FechaElaboracion: Date;
   }) {
-    return executeStoredProcedure('sp_add_product_to_order', {
+    // This uses the existing relationship table procedures
+    return executeStoredProcedure('Insertar_PED_PRO', {
       NumPedido: data.NumPedido,
       IDProducto: data.IDProducto,
       cantidad: data.cantidad,
       FechaElaboracion: data.FechaElaboracion,
     });
+  }
+}
+
+// Additional utility services for the existing location tables
+export class LocationService {
+  static async selectCiudades() {
+    return executeStoredProcedure('sp_select_ciudades', {});
+  }
+
+  static async selectProvincias() {
+    return executeStoredProcedure('sp_select_provincias', {});
   }
 }
 

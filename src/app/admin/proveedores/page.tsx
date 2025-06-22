@@ -10,7 +10,7 @@ export default function ProveedoresPage() {
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<Proveedor | null>(null);
-  const [userAuth, setUserAuth] = useState<string>('12345'); // Demo auth
+  const [userAuth, setUserAuth] = useState<string>('208340123'); // Demo auth
 
   // Form state
   const [formData, setFormData] = useState({
